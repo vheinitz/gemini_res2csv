@@ -205,6 +205,24 @@ class HandPipetted(unittest.TestCase):
         self.assertTrue(all(entry["sample_id"] for entry in run.samples()))
 
 
+class AssayNames(unittest.TestCase):
+    def test_a_cp1252_character_in_the_path_survives(self):
+        # The assay paths are searched for in the raw bytes; a pattern limited to
+        # ASCII cut "3206_ß2-Glyco-GM_IgG_Messen" down to "2-Glyco-GM_IgG_Messen"
+        # and the CSV then named an assay that does not exist.
+        run = run_of("320625480manGM5aLKE")
+        self.assertEqual(run.assay_name, "3206_ß2-Glyco-GM_IgG_Messen")
+        self.assertTrue(all(name.endswith(".asy") for name in run.assays))
+
+    def test_the_batch_list_names_the_same_assay(self):
+        # CBatchInformation's first entry is the assay file as well — a second,
+        # independent source for the name the export shows.
+        for name in RUNS:
+            with self.subTest(name):
+                run = run_of(name)
+                self.assertEqual(run.reagents[0].name, run.assay_name)
+
+
 class SplitPlate(unittest.TestCase):
     def test_two_assays_are_recognised(self):
         run = run_of("320426350494GM03LBR3")

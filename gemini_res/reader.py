@@ -553,7 +553,10 @@ def _assay_files(data: bytes) -> list[str]:
     spelled out, once per assay.
     """
     found = []
-    for hit in re.finditer(rb"[\x20-\x7e]{3,80}\.asy", data, re.I):
+    # **Not ASCII only**: a path can carry a cp1252 character — the assay
+    # "3206_ß2-Glyco-GM_IgG_Messen" lost its first letters to a `\x20-\x7e`
+    # pattern, and the CSV then named a different assay than the instrument.
+    for hit in re.finditer(rb"[^\x00-\x1f]{3,80}\.asy", data, re.I):
         name = hit.group().decode(ENCODING, errors="replace").split("\\")[-1]
         if name not in found:
             found.append(name)
