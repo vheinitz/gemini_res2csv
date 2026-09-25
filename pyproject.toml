@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemini-res"
+version = "0.1.0"
+description = "Read Stratec Gemini ELISA .res result files and export them as CSV, without the instrument software"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+keywords = ["elisa", "gemini", "stratec", "laboratory", "immunoassay", "mfc", "carchive"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+dependencies = []
+
+[project.scripts]
+gemini-res = "gemini_res.cli:main"
+
+[project.urls]
+Documentation = "https://github.com/OWNER/gemini-res/blob/main/docs/FORMAT.md"
+Source = "https://github.com/OWNER/gemini-res"
+
+[tool.setuptools]
+packages = ["gemini_res"]
