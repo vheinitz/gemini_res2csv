@@ -24,23 +24,23 @@ def parse(text: str) -> list[dict]:
 
 class Shape(unittest.TestCase):
     def test_header_and_columns(self):
-        run = run_of("320424220465M27LBR")
+        run = run_of("900124220465M27LBR")
         text = export_csv(run)
-        self.assertTrue(text.startswith("Plate ID,320424220465M27LBR\r\n"))
-        self.assertIn("Assay,3204_Cardiolipin-GM_IgM_27C\r\n", text)
+        self.assertTrue(text.startswith("Plate ID,900124220465M27LBR\r\n"))
+        self.assertIn("Assay,9001_Cardiolipin-GM_IgM_27C\r\n", text)
         self.assertEqual(list(parse(text)[0].keys()), COLUMNS)
 
     def test_crlf_and_quoting(self):
         # Gemini writes CRLF, leaves the two header lines and the column names
         # unquoted and quotes every data field; a tool that already reads its
         # files should not need a special case for ours.
-        text = export_csv(run_of("340125136490G1RH"))
-        self.assertIn('"3401_a-TPO_IgG_V3_QC","340125136490G1RH","A1","CalA"', text)
+        text = export_csv(run_of("900325136490G1RH"))
+        self.assertIn('"9003_a-TPO_IgG_V3_QC","900325136490G1RH","A1","CalA"', text)
         self.assertIn("\r\nAssay,Plate ID,Well Location,", text)
         self.assertNotIn("\n", text.replace("\r\n", ""))
 
     def test_the_head_is_the_instrument_s_head(self):
-        for name in ("320424220465M27LBR", "340125136490G1RH"):
+        for name in ("900124220465M27LBR", "900325136490G1RH"):
             with self.subTest(name):
                 theirs = (DATA / (name + ".csv")).read_bytes()
                 ours = export_csv(run_of(name)).encode("cp1252")
@@ -70,7 +70,7 @@ class Shape(unittest.TestCase):
 
 class AgainstTheInstrument(unittest.TestCase):
     def test_values_and_labels(self):
-        for name in ("320424220465M27LBR", "320424220465MRTLBR", "340125136490G1RH"):
+        for name in ("900124220465M27LBR", "900124220465MRTLBR", "900325136490G1RH"):
             with self.subTest(name):
                 ours = {row["Well Location"]: row for row in parse(export_csv(run_of(name)))}
                 for theirs in rows(name):
@@ -86,9 +86,9 @@ class AgainstTheInstrument(unittest.TestCase):
     def test_stars_where_the_instrument_writes_stars(self):
         # ***** means "no value" — outside the curve. Where the instrument wrote
         # it, we must not produce a number out of thin air.
-        run = run_of("320424220465M27LBR")
+        run = run_of("900124220465M27LBR")
         ours = {row["Well Location"]: row for row in parse(export_csv(run))}
-        for theirs in rows("320424220465M27LBR"):
+        for theirs in rows("900124220465M27LBR"):
             if number(theirs["Quant. 1 value"]) is None:
                 self.assertIsNone(
                     number(ours[theirs["Well Location"]]["Quant. 1 value"]),
@@ -96,13 +96,13 @@ class AgainstTheInstrument(unittest.TestCase):
                 )
 
     def test_a_split_plate_writes_no_quantitative_values(self):
-        run = run_of("320426350494GM03LBR3")
+        run = run_of("900126350494GM03LBR3")
         for row in parse(export_csv(run)):
             self.assertEqual(row["Quant. 1 value"], "*****")
             self.assertEqual(row["Quant. 1 mean"], "*****")
 
     def test_without_a_layout_there_is_no_mean(self):
-        run = run_of("320625480manGM5aLKE")
+        run = run_of("900225480manGM5aLKE")
         controls = [row for row in parse(export_csv(run)) if row["Layout Label"] == "C?"]
         self.assertTrue(controls)
         for row in controls:
@@ -118,9 +118,9 @@ class CommandLine(unittest.TestCase):
         import contextlib
 
         with contextlib.redirect_stdout(out):
-            code = main([str(DATA / "340125136490G1RH.res")])
+            code = main([str(DATA / "900325136490G1RH.res")])
         self.assertEqual(code, 0)
-        self.assertEqual(out.getvalue(), export_csv(run_of("340125136490G1RH")))
+        self.assertEqual(out.getvalue(), export_csv(run_of("900325136490G1RH")))
 
     def test_summary_of_a_directory(self):
         from gemini_res.cli import main
@@ -145,12 +145,12 @@ class CommandLine(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             with contextlib.redirect_stdout(io.StringIO()):
-                code = main(["-f", "json", "-o", tmp, str(DATA / "320424220465M27LBR.res")])
+                code = main(["-f", "json", "-o", tmp, str(DATA / "900124220465M27LBR.res")])
             self.assertEqual(code, 0)
-            written = Path(tmp) / "320424220465M27LBR.json"
+            written = Path(tmp) / "900124220465M27LBR.json"
             data = json.loads(written.read_text())
             self.assertEqual(len(data["wells"]), 96)
-            self.assertEqual(data["plate_id"], "320424220465M27LBR")
+            self.assertEqual(data["plate_id"], "900124220465M27LBR")
 
     def test_an_unreadable_file_is_reported_and_counted(self):
         import contextlib

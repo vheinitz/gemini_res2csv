@@ -41,9 +41,9 @@ def has_export(name: str) -> bool:
 
 #: Every run in ``tests/data``, and what makes each of them worth keeping.
 RUNS = {
-    "320424220465M27LBR": "3204 Cardiolipin IgM at 27 °C, with export",
-    "320424220465MRTLBR": "the same assay, version 2, with export",
-    "320426350494GM03LBR3": "two assays on one plate (IgG left, IgM right)",
-    "320625480manGM5aLKE": "pipetted by hand — no layout in the file",
-    "340125136490G1RH": "3401 a-TPO, export written with a decimal comma",
+    "900124220465M27LBR": "9001 Cardiolipin IgM at 27 °C, with export",
+    "900124220465MRTLBR": "the same assay, version 2, with export",
+    "900126350494GM03LBR3": "two assays on one plate (IgG left, IgM right)",
+    "900225480manGM5aLKE": "pipetted by hand — no layout in the file",
+    "900325136490G1RH": "9003 a-TPO, export written with a decimal comma",
 }

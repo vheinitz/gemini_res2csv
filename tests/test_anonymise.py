@@ -53,8 +53,8 @@ class OnePass(unittest.TestCase):
         self.assertIn(b"-200", out)
 
     def test_length_is_preserved(self):
-        raw = (DATA / "320424220465M27LBR.res").read_bytes()
-        run = read_run(DATA / "320424220465M27LBR.res")
+        raw = (DATA / "900124220465M27LBR.res").read_bytes()
+        run = read_run(DATA / "900124220465M27LBR.res")
         table = anonymise_tool.mapping_for([w.sample_id for w in run.wells])
         self.assertEqual(len(anonymise_tool.anonymise(raw, table)), len(raw))
 
@@ -76,7 +76,7 @@ class AlreadyClean(unittest.TestCase):
         # The placeholders are valid sample ids themselves, so a second pass
         # renumbers them — S1000 may become S3000. That is harmless as long as no
         # measurement moves, which is the property the files are published for.
-        for name in ("320424220465M27LBR", "340125136490G1RH"):
+        for name in ("900124220465M27LBR", "900325136490G1RH"):
             with self.subTest(name):
                 path = DATA / (name + ".res")
                 raw = path.read_bytes()

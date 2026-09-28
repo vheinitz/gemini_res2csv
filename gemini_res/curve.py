@@ -29,11 +29,11 @@ and that is what reproduces the runs — see :data:`ITERATIONS`.
 
 | run | assay | median deviation | parameters |
 |---|---|---|---|
-| …M27LBR | 3204 Cardiolipin IgM 27 °C | 0.007 ‰ | identical to four decimals |
-| …M32LBR | 3204 Cardiolipin IgM 32 °C | 0.009 ‰ | identical to four decimals |
-| …MRTLBR | 3204 Cardiolipin IgM V2 | 0.008 ‰ | |
-| …G1RH | 3401 a-TPO | 0.006 ‰ | |
-| …GM1RH | 3208 Inositol (first half) | 0.05 ‰ | |
+| …M27LBR | 9001 Cardiolipin IgM 27 °C | 0.007 ‰ | identical to four decimals |
+| …M32LBR | 9001 Cardiolipin IgM 32 °C | 0.009 ‰ | identical to four decimals |
+| …MRTLBR | 9001 Cardiolipin IgM V2 | 0.008 ‰ | |
+| …G1RH | 9003 a-TPO | 0.006 ‰ | |
+| …GM1RH | 9004 Inositol (first half) | 0.05 ‰ | |
 
 Per mille, not per cent: the arithmetic is reproduced, not approximated.
 """

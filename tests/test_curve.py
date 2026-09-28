@@ -17,7 +17,7 @@ from .gemini_export import DATA, number, rows
 
 #: Runs with an export whose plate carries a single assay, so the curve of the
 #: plate is the curve of every well on it.
-COMPARABLE = ["320424220465M27LBR", "320424220465MRTLBR", "340125136490G1RH"]
+COMPARABLE = ["900124220465M27LBR", "900124220465MRTLBR", "900325136490G1RH"]
 
 
 def run_of(name: str):
@@ -61,7 +61,7 @@ class Refusals(unittest.TestCase):
     def test_a_split_plate_gets_no_curve(self):
         # Two assays, one layout: the second half would be measured against the
         # first half's calibrators. No number is better than that number.
-        run = run_of("320426350494GM03LBR3")
+        run = run_of("900126350494GM03LBR3")
         self.assertIsNone(calibration_curve(run))
         self.assertTrue(any("split plate" in gap for gap in run.gaps))
 
@@ -107,7 +107,7 @@ class AgainstTheInstrument(unittest.TestCase):
         one per mille of the value itself.
 
         **Just above the lower asymptote that is not enough**, and the reason is
-        the curve, not the code: in run 340125136490G1RH the fit puts ``a`` at
+        the curve, not the code: in run 900325136490G1RH the fit puts ``a`` at
         0.05866, and well C4 reads an OD of 0.061 — two thousandths above it. The
         inverse of the logistic has no bound there, so the fifth decimal of ``a``
         decides whether the result reads 0.02 or 0.03. Below 0.05 the tolerance is
@@ -128,13 +128,13 @@ class AgainstTheInstrument(unittest.TestCase):
         # Gemini does not average the two concentrations; it computes one
         # concentration from the averaged OD. CalD of this run is the example:
         # 34.65 and 19.74 average to 27.20, but the export says 26.68.
-        run = run_of("320424220465M27LBR")
+        run = run_of("900124220465M27LBR")
         curve = calibration_curve(run)
         means = {}
         for entry in run.samples() + run.controls():
             for well in entry["wells"]:
                 means[well] = entry["od_mean"]
-        for row in rows("320424220465M27LBR"):
+        for row in rows("900124220465M27LBR"):
             expected = number(row["Quant. 1 mean"])
             if expected is None or expected <= 0:
                 continue
@@ -144,13 +144,13 @@ class AgainstTheInstrument(unittest.TestCase):
 
 class Saturation(unittest.TestCase):
     def test_a_saturated_series_is_well_determined(self):
-        run = run_of("320424220465M27LBR")
+        run = run_of("900124220465M27LBR")
         self.assertTrue(calibration_curve(run).well_determined)
 
     def test_iterations_matter_only_where_the_fit_still_moves(self):
         # CSigmoid::Fit runs a fixed number of iterations. Where it has settled,
         # more of them change nothing — that is what makes 100 a safe choice.
-        points = calibrator_points(run_of("320424220465M27LBR"))
+        points = calibrator_points(run_of("900124220465M27LBR"))
         a = curve_from(points, iterations=100).parameters
         b = curve_from(points, iterations=200).parameters
         for x, y in zip(a, b):
