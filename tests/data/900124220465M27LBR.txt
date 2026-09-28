@@ -1,4 +1,4 @@
-[3204_Cardiolipin-GM_IgM_27C]
+[9001_Cardiolipin-GM_IgM_27C]
 
 [Results]
 Sample ID,Well Location

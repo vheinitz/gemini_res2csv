@@ -5,9 +5,9 @@ them into CSV, without Windows and without the instrument software.
 
 ```console
 $ gemini-res plate.res > plate.csv
-$ gemini-res --format summary 340125136490G1RH.res
-340125136490G1RH.res  340125136490G1RH
-  assay        3401_a-TPO_IgG_V3_QC
+$ gemini-res --format summary 900325136490G1RH.res
+900325136490G1RH.res  900325136490G1RH
+  assay        9003_a-TPO_IgG_V3_QC
   run          2026-09-15 10:12
   user         QC User D2
   temperature  24.47 °C
@@ -36,6 +36,16 @@ calibrators on the plate.
 
 That makes the `.res` the one reliable source, and reading it directly means a
 laboratory can get its results out of a Gemini on any machine, automatically.
+
+It also makes large backups of `.res` files searchable. Years of runs sit in
+archives that only the instrument software can open, one plate at a time; with
+`--format json` or `--format summary` over a directory, a metadata index of all of
+them — plate, assay, date, user, reagent lots, sample ids — is built in minutes.
+The same output serves to check a run for plausibility (a calibration curve that
+is not saturated, a clot flag, a missing lot) or to annotate it.
+
+This is a private, spare-time project. It is not a product of, nor endorsed by,
+Stratec or any reagent manufacturer, and it is not validated for diagnostic use.
 
 ## Install
 
@@ -67,13 +77,13 @@ command can carry a pipeline.
 ```python
 from gemini_res import read_run, export_csv, calibration_curve
 
-run = read_run("340125136490G1RH.res")
+run = read_run("900325136490G1RH.res")
 
-run.plate_id          # '340125136490G1RH'
-run.assay_name        # '3401_a-TPO_IgG_V3_QC'
+run.plate_id          # '900325136490G1RH'
+run.assay_name        # '9003_a-TPO_IgG_V3_QC'
 run.timestamp         # datetime(2026, 9, 15, 10, 12, 29)
 run.unit              # 'IU/ml'
-run.reagents          # [Reagent(name='3401_a-TPO_IgG_V3_QC', lot=''), ...]
+run.reagents          # [Reagent(name='9003_a-TPO_IgG_V3_QC', lot=''), ...]
 run.gaps              # what the reader could not read — see below
 
 for sample in run.samples():

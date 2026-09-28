@@ -222,9 +222,9 @@ class Run:
         **Two names, and they can differ.** ``CAssayHeader`` carries the name of
         the assay *definition*; the plate names the ``.asy`` *file* it ran. Save a
         copy of an assay under a new file name and the definition keeps its old
-        name — in ``320424220465M27LBR`` the header says
-        ``3204_Cardiolipin-GM_IgM_V2_QC`` while the file, and Gemini's export, say
-        ``3204_Cardiolipin-GM_IgM_27C``. The file name is what a laboratory reads
+        name — in ``900124220465M27LBR`` the header says
+        ``9001_Cardiolipin-GM_IgM_V2_QC`` while the file, and Gemini's export, say
+        ``9001_Cardiolipin-GM_IgM_27C``. The file name is what a laboratory reads
         off its result sheet, so that is what goes into the CSV.
         """
         if self.assays:
@@ -256,7 +256,7 @@ class Run:
         This is where a duplicate determination is bundled into one result.
 
         **A flagged well does not count towards the mean.** In run
-        320424220465MRTLBR well B4 carries the flag; its own OD is 0.027, A4 reads
+        900124220465MRTLBR well B4 carries the flag; its own OD is 0.027, A4 reads
         0.079, and the instrument's export gives the pair a mean of 0.079 — A4
         alone. The flag is in the well record (``CResultFlag``), so the rule is in
         the file, not in an interpretation of the numbers. The value of the
@@ -543,7 +543,7 @@ def _assay_files(data: bytes) -> list[str]:
 
     **Why this is needed:** a plate can carry **two** assays, each on its half of
     the columns and with its own calibrators (in one laboratory's archive, 21 of
-    98 runs: 3204 IgG left, IgM right; 3208 Inositol likewise). The export lists
+    98 runs: 9001 IgG left, IgM right; 9004 Inositol likewise). The export lists
     both under the same plate id, and the ``.res`` contains both.
 
     The class name does not show it: ``CArchive`` writes a name only for the
@@ -554,7 +554,7 @@ def _assay_files(data: bytes) -> list[str]:
     """
     found = []
     # **Not ASCII only**: a path can carry a cp1252 character — the assay
-    # "3206_ß2-Glyco-GM_IgG_Messen" lost its first letters to a `\x20-\x7e`
+    # "9002_ß2-Glyco-GM_IgG_Messen" lost its first letters to a `\x20-\x7e`
     # pattern, and the CSV then named a different assay than the instrument.
     for hit in re.finditer(rb"[^\x00-\x1f]{3,80}\.asy", data, re.I):
         name = hit.group().decode(ENCODING, errors="replace").split("\\")[-1]
@@ -745,7 +745,7 @@ def calibrator_points(run: Run) -> list[tuple[float, float]]:
 def split_plate(run: Run) -> bool:
     """Does the plate carry **more than one** assay?
 
-    Two assays side by side on one plate are common: 3204 IgG left, IgM right,
+    Two assays side by side on one plate are common: 9001 IgG left, IgM right,
     each with its own calibrators in its own half.
 
     **Why this is checked and not merely noted:** so far the reader takes the

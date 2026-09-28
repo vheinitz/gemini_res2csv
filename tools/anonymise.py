@@ -22,10 +22,15 @@ What is replaced:
   ``-1280``, ``/400``) and its one-to-three letter suffix, so the files stay useful as
   examples of how laboratories encode dilutions in a sample id.
 
-What is **not** replaced, deliberately: plate ids, assay names and catalogue
-numbers. They identify a product and a plate, not a person, and they are the
-handle by which a run is discussed. Reagent lot numbers stay as well — without
-them the ``CBatchInformation`` schema could not be checked.
+* the manufacturer's catalogue numbers (REF), which lead the assay names and the
+  plate ids — together with the product name they name the manufacturer. They
+  go into the local literals file like the names: ``1234_`` for the assay names,
+  the digits a plate id starts with for the plates. The file names follow.
+
+What is **not** replaced, deliberately: the rest of the plate id and the product
+names in the assay names; they are the handle by which a run is discussed.
+Reagent lot numbers stay as well — without them the ``CBatchInformation`` schema
+could not be checked.
 
 The companion files of a run — the instrument's own ``.csv`` export and its
 ``.txt`` report — get the same substitutions, so they remain a valid cross-check
@@ -158,6 +163,11 @@ def anonymise(raw: bytes, table: dict[bytes, bytes]) -> bytes:
     return bytes(out)
 
 
+def _renamed(name: str, table: dict[bytes, bytes]) -> str:
+    """A run's files are named after its plate id, so they carry what it carried."""
+    return anonymise(name.encode("latin-1"), table).decode("latin-1")
+
+
 def main(argv: list[str]) -> int:
     if len(argv) != 3:
         print(__doc__)
@@ -172,7 +182,7 @@ def main(argv: list[str]) -> int:
     run = read_run(source)
     table = mapping_for([w.sample_id for w in run.wells])
 
-    target = out_dir / source.name
+    target = out_dir / _renamed(source.name, table)
     target.write_bytes(anonymise(source.read_bytes(), table))
 
     # And read it back: a file that no longer parses is worse than no sample.
@@ -184,7 +194,7 @@ def main(argv: list[str]) -> int:
     for suffix in COMPANIONS:
         companion = source.with_suffix(suffix)
         if companion.exists():
-            copy = out_dir / companion.name
+            copy = out_dir / _renamed(companion.name, table)
             copy.write_bytes(anonymise(companion.read_bytes(), table))
             print("%s -> %s" % (companion.name, copy))
     return 0

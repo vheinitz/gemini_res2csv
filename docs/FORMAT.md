@@ -74,7 +74,7 @@ The file begins with it, at offset 0:
 11 00 00 00                          i32   17    version; 17 in every file seen
 00                                   u8          0 in every file seen
 54 81 59 9c 0d 99 e6 40              double      OLE date: when the plate was saved
-10 "340125136490G1RH"                CString     plate id (the plate's barcode)
+10 "900325136490G1RH"                CString     plate id (the plate's barcode)
 0a "QC User D2"                      CString     the user who saved the run
 00 00 00 00                          i32   0     unexplained
 08 00 00 00                          i32   8     rows
@@ -132,7 +132,7 @@ run's sample list, not a position on the plate.
 
 **The result flag** is the one field in this record that changes a number. A
 flagged well is reported but **does not count towards the mean**: in run
-`320424220465MRTLBR` well B4 is flagged, its own OD is 0.027, A4 reads 0.079, and
+`900124220465MRTLBR` well B4 is flagged, its own OD is 0.027, A4 reads 0.079, and
 the instrument's export gives both wells a mean of 0.079 — A4 alone. It is the
 only flagged well in the sample files, and it is exactly the well the export
 excludes.
@@ -156,7 +156,7 @@ Group names look like `CAL_A_Cardiolipin-GM`, `PC_…`, `NC_…`, `CO_…` and
 their sample index.
 
 **Without a pipetting protocol there is no layout.** Plates pipetted by hand (the
-sample file `320625480manGM5aLKE`) contain no dilution groups at all. Their
+sample file `900225480manGM5aLKE`) contain no dilution groups at all. Their
 control wells are used and carry no sample, and that is all the file says; the
 reader labels them `C?`, reports each on its own, and records the fact as a gap
 rather than inventing a grid.
@@ -189,9 +189,9 @@ CString assay  CString author  …  CString plate type  CString description
 **Two assay names, and they can differ.** This header carries the name of the
 assay *definition*; the plate also names the `.asy` *file* it ran, in
 `CAssayDetails`, as a full Windows path. Save a copy of an assay under a new file
-name and the definition keeps its old name: in `320424220465M27LBR` the header
-says `3204_Cardiolipin-GM_IgM_V2_QC` while the file — and the instrument's export
-— say `3204_Cardiolipin-GM_IgM_27C`. The file name is the one a laboratory reads
+name and the definition keeps its old name: in `900124220465M27LBR` the header
+says `9001_Cardiolipin-GM_IgM_V2_QC` while the file — and the instrument's export
+— say `9001_Cardiolipin-GM_IgM_27C`. The file name is the one a laboratory reads
 off its result sheet.
 
 `CQuantitativeSettings` holds the unit (`U/ml`, `MPL/ml`) and the calibrator
@@ -218,7 +218,7 @@ is the only place in the file where the lots of conjugate, substrate and
 calibrator appear.
 
 **The first record of this list is not a reagent**: it carries the assay, and it
-carries the name of the assay *file* (`3204_Cardiolipin-GM_IgM_27C`), not the
+carries the name of the assay *file* (`9001_Cardiolipin-GM_IgM_27C`), not the
 definition's name from `CAssayHeader`. It is therefore a second source for the
 name the export shows — see [§6](#6-assay-calibrators-unit).
 
@@ -273,7 +273,7 @@ calibrator is left out, the same rule the means follow.
 
 Each well's concentration is the curve inverted at its **own** OD; the mean
 concentration of a duplicate is the curve inverted at the **mean OD** — not the
-average of the two concentrations. Example from `320424220465M27LBR`, well CalD:
+average of the two concentrations. Example from `900124220465M27LBR`, well CalD:
 34.65 and 19.74 average to 27.20, while the instrument reports 26.68, which is
 the curve at OD 0.896.
 
@@ -291,7 +291,7 @@ reads 0.02 or 0.03.
 
 A plate can carry **two assays**, each on its half of the columns and each with
 its own calibrators. In one laboratory's archive, 21 of 98 exported runs were of
-that kind (3204 IgG left, IgM right; 3208 Inositol likewise). The export lists
+that kind (9001 IgG left, IgM right; 9004 Inositol likewise). The export lists
 both halves under the same plate id.
 
 Because a class is named only once ([§1](#1-what-kind-of-file-it-is)), the second
