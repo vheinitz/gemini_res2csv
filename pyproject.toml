@@ -25,8 +25,8 @@ dependencies = []
 gemini-res = "gemini_res.cli:main"
 
 [project.urls]
-Documentation = "https://github.com/OWNER/gemini-res/blob/main/docs/FORMAT.md"
-Source = "https://github.com/OWNER/gemini-res"
+Documentation = "https://github.com/vheinitz/gemini_res2csv/blob/main/docs/FORMAT.md"
+Source = "https://github.com/vheinitz/gemini_res2csv"
 
 [tool.setuptools]
 packages = ["gemini_res"]
