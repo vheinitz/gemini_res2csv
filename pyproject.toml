@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "Read Stratec Gemini ELISA .res result files and export them as CSV, without the instrument software"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = ["elisa", "gemini", "stratec", "laboratory", "immunoassay", "mfc", "carchive"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",

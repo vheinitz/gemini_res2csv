@@ -36,8 +36,8 @@ validated for diagnostic use.
 pip install .
 ```
 
-Or copy the `gemini_res/` directory into your project. Requires Python 3.9 or
-newer; CI runs the tests on Python 3.9 and 3.13.
+Or copy the `gemini_res/` directory into your project. Requires Python 3.10 or
+newer; CI runs the tests on Python 3.10 and 3.13.
 
 ## Command line
 
