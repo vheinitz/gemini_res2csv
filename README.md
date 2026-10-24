@@ -1,5 +1,7 @@
 # gemini-res
 
+[![test](https://github.com/vheinitz/gemini_res2csv/actions/workflows/test.yml/badge.svg)](https://github.com/vheinitz/gemini_res2csv/actions/workflows/test.yml)
+
 Reads the `.res` result files of a Stratec Gemini ELISA processor and exports
 them as CSV (in the instrument's own export layout), JSON or a short summary,
 without Windows and without the instrument software. Python standard library
@@ -35,7 +37,7 @@ pip install .
 ```
 
 Or copy the `gemini_res/` directory into your project. Requires Python 3.9 or
-newer (`pyproject.toml`); the tests were run on CPython 3.12.
+newer; CI runs the tests on Python 3.9 and 3.13.
 
 ## Command line
 
